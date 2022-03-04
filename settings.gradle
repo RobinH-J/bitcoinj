@@ -25,6 +25,9 @@ project(':tools').name = 'bitcoinj-tools'
 include 'wallettool'
 project(':wallettool').name = 'bitcoinj-wallettool'
 
+include 'play'
+project(':play').name = 'play'
+
 include 'examples'
 project(':examples').name = 'bitcoinj-examples'
 

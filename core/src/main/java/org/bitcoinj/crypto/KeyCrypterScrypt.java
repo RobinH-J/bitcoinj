@@ -157,7 +157,23 @@ public class KeyCrypterScrypt implements KeyCrypter {
             }
 
             final Stopwatch watch = Stopwatch.createStarted();
-            byte[] keyBytes = SCrypt.generate(passwordBytes, salt, (int) scryptParameters.getN(), scryptParameters.getR(), scryptParameters.getP(), KEY_LENGTH);
+//            byte[] keyBytes = SCrypt.generate(passwordBytes, salt, (int) scryptParameters.getN(), scryptParameters.getR(), scryptParameters.getP(), KEY_LENGTH);
+//            Generate a key using the scrypt key derivation function.
+//            Params:
+//              P – the bytes of the pass phrase.
+//              S – the salt to use for this invocation.
+//              N – CPU/Memory cost parameter. Must be larger than 1, a power of 2 and less than 2^(128 * r / 8).
+//              r – the block size, must be >= 1.
+//              p – Parallelization parameter. Must be a positive integer less than or equal to Integer.MAX_VALUE / (128 * r * 8).
+//              dkLen – the length of the key to generate.
+//            Returns:
+//              the generated key.
+            byte[] keyBytes = SCrypt.generate(passwordBytes, salt,
+                    65536,   // CPU/Memory cost 2^16
+                    8,
+                    1,      // Parallelisation
+                    KEY_LENGTH);
+
             watch.stop();
             log.info("Deriving key took {} for {}.", watch, scryptParametersString());
             return new KeyParameter(keyBytes);

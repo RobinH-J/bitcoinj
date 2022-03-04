@@ -129,7 +129,7 @@ public class Wallet extends BaseTaggableObject
     // Ordering: lock > keyChainGroupLock. KeyChainGroup is protected separately to allow fast querying of current receive address
     // even if the wallet itself is busy e.g. saving or processing a big reorg. Useful for reducing UI latency.
     protected final ReentrantLock lock = Threading.lock(Wallet.class);
-    protected final ReentrantLock keyChainGroupLock = Threading.lock("Wallet-KeyChainGroup lock");
+    public final ReentrantLock keyChainGroupLock = Threading.lock("Wallet-KeyChainGroup lock");
 
     private static final int MINIMUM_BLOOM_DATA_LENGTH = 8;
 
@@ -180,7 +180,7 @@ public class Wallet extends BaseTaggableObject
 
     // The key chain group is not thread safe, and generally the whole hierarchy of objects should not be mutated
     // outside the wallet lock. So don't expose this object directly via any accessors!
-    @GuardedBy("keyChainGroupLock") private KeyChainGroup keyChainGroup;
+    @GuardedBy("keyChainGroupLock") public KeyChainGroup keyChainGroup;
 
     // A list of scripts watched by this wallet.
     @GuardedBy("keyChainGroupLock") private Set<Script> watchedScripts;
